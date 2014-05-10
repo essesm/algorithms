@@ -4,16 +4,16 @@
 class Inversions
 {
 	public:
-		int count(int arr[], int size);
+		long count(int arr[], int size);
 
 	private:
 		void sort(int arr[], int size);
 		void merge(int arr[], int a1[], int s1, int a2[], int s2);
-		int inversions;
+		long inversions;
 };
 
 
-int Inversions::count(int arr[], int size)
+long Inversions::count(int arr[], int size)
 {
 	inversions = 0;
 	sort(arr, size);

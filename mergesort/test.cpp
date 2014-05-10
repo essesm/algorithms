@@ -45,4 +45,6 @@ int main()
 	{
 		assert(a5[i] == i + 1);
 	}
+
+	return 0;
 }

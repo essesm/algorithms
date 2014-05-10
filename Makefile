@@ -1,4 +1,4 @@
-DIRS = mergesort
+DIRS = mergesort inversions
 
 all: $(DIRS)
 	for dir in $(DIRS); do make -C $$dir; done;
