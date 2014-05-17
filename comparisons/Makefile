@@ -3,7 +3,7 @@ LD_LIBRARY_PATH := /usr/um/gcc-4.7.0/lib64
 LD_RUN_PATH := /usr/um/gcc-4.7.0/lib64
 
 CXX := g++
-CXXFLAGS := -Werror -Wall -Wextra -pedantic -std=c++11
+CXXFLAGS := -Wall -Wextra -pedantic -std=c++11
 LD := g++
 LDFLAGS := -O3
 OBJS := $(patsubst %.cpp, %.o, $(wildcard *.cpp))
