@@ -1,35 +1,43 @@
 #ifndef __QUICKSORT_H__
 #define __QUICKSORT_H__
 
+#include <iostream>
+using namespace std;
+
 class QuickSort
 {
 	public:
 		void sort(int arr[], int size);
 
 	private:
-		int partition(int arr[], int size);
+		void sort(int arr[], int left, int right);
+		int partition(int arr[], int left, int right);
 		void swap(int &x, int &y);
 };
 
 void QuickSort::sort(int arr[], int size)
 {
-	if (size < 2)
+	sort(arr, 0, size);
+}
+
+void QuickSort::sort(int arr[], int left, int right)
+{
+	if (left == right)
 	{
 		return;
 	}
 
-	int middle = partition(arr, size);
-	sort(arr, middle);
-	sort(arr + middle, size - middle);
+	int middle = partition(arr, left, right);
+	sort(arr, left, middle);
+	sort(arr, middle + 1, right);
 }
 
-int QuickSort::partition(int arr[], int size)
+int QuickSort::partition(int arr[], int left, int right)
 {
-	swap(arr[0], arr[size / 2]);
-	int pivot = arr[0];
+	int pivot = arr[left];
 
-	int i = 1;
-	for (int j = 1; j < size; j++)
+	int i = left + 1;
+	for (int j = left + 1; j < right; j++)
 	{
 		if (arr[j] < pivot)
 		{
@@ -37,9 +45,9 @@ int QuickSort::partition(int arr[], int size)
 		}
 	}
 
-	swap(arr[0], arr[i - 1]);
+	swap(arr[left], arr[--i]);
 
-	return i - 1;
+	return i;
 }
 
 void QuickSort::swap(int &x, int &y)
