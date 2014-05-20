@@ -1,9 +1,6 @@
 #ifndef __QUICKSORT_H__
 #define __QUICKSORT_H__
 
-#include <iostream>
-using namespace std;
-
 class QuickSort
 {
 	public:
