@@ -1,163 +1,157 @@
 #ifndef __KOSARAJU_H__
 #define __KOSARAJU_H__
 
-#include <queue>
-#include <utility>
+#include <vector>
 #include <map>
-
 #include <iostream>
+#include <queue>
 
 using namespace std;
-
-class Vertex;
-
-class Graph
-{
-public:
-	Graph();
-	void scc();
-	void addEdge(pair<int, int> edge);
-
-private:
-	int finishingTime;
-	int source;
-	map<int, vector<int> > backwardEdges;
-	map<int, vector<int> > forwardEdges;
-	map<int, Vertex> vertices;
-	map<int, int> sizes;
-	void dfsLoop(map<int, Vertex> vertexMap, map<int, vector<int> > edges);
-	void dfs(map<int, Vertex> vertexMap, map<int, vector<int> > edges, int vertex);
-	void unvisitNodes();
-	map<int, vector<int> > renameNodes();
-};
 
 class Vertex
 {
 public:
-	Vertex();
-	int t;
-	int s;
-	bool explored;
+	bool visited;
+	int leader;
+	int finish;
+	vector<int> linkedVertices;
+	vector<int> rLinkedVertices;
 };
 
-Graph::Graph():finishingTime(0), source(0)
+class Graph
 {
+public:
+	Graph(int N);
+	~Graph();
+	void addEdge(int v1, int v2);
+	void scc();
 
+private:
+	int t;
+	int s;
+	int N;
+	Vertex *G;
+	Vertex *newG;
+
+	void dfs(Vertex G[], int i, bool reverse);
+	void dfsLoop(Vertex G[], bool reverse);
+	void prepareSecondPass();
+};
+
+Graph::Graph(int N):N(N)
+{
+	G = new Vertex[N + 1];
+	newG = new Vertex[N + 1];
+}
+
+Graph::~Graph()
+{
+	delete[] G;
+	delete[] newG;
+}
+
+void Graph::dfs(Vertex G[], int i, bool reverse)
+{
+	G[i].visited = true;
+	G[i].leader = s;
+
+	vector<int> next;
+
+	if (reverse)
+	{
+		next = G[i].rLinkedVertices;
+	}
+	else
+	{
+		next = G[i].linkedVertices;
+	}
+
+	for (unsigned int j = 0; j < next.size(); j++)
+	{
+		if (!G[next[j]].visited)
+		{
+			dfs(G, next[j], reverse);
+		}
+	}
+
+	t++;
+	G[i].finish = t;
+}
+
+void Graph::dfsLoop(Vertex G[], bool reverse)
+{
+	t = 0;
+	s = 0;
+
+	for (int i = N; i > 0; i--)
+	{
+		if (!G[i].visited)
+		{
+			s = i;
+			dfs(G, i, reverse);
+		}
+	}
+}
+
+void Graph::addEdge(int v1, int v2)
+{
+	G[v1].linkedVertices.push_back(v2);
+	G[v2].rLinkedVertices.push_back(v1);
+}
+
+void Graph::prepareSecondPass()
+{
+	for (int i = 1; i <= N; i++)
+	{
+		newG[i].visited = false;
+		newG[i].finish = 0;
+		newG[i].leader = 0;
+		vector<int> temp;
+
+		for (unsigned int j = 0; j < G[i].linkedVertices.size(); j++)
+		{
+			temp.push_back(G[G[i].linkedVertices[j]].finish);
+		}
+
+		newG[G[i].finish].linkedVertices = temp;
+	}
 }
 
 void Graph::scc()
 {
-	dfsLoop(vertices, backwardEdges);
-	
-	cout << "Printing backward edges\n";
-	for (auto i = backwardEdges.begin(); i != backwardEdges.end(); i++)
+	dfsLoop(G, true);
+	prepareSecondPass();
+	dfsLoop(newG, false);
+
+	map<int, int> sccSizes;
+	priority_queue<int> top;
+
+	for (int i =  1; i <= N; i++)
 	{
-		cout << "Node " << i->first << ": ";
-		for (unsigned int j = 0; j < i->second.size(); j++)
+		sccSizes[newG[i].leader]++;
+	}
+
+	for (auto i = sccSizes.begin(); i != sccSizes.end(); i++)
+	{
+		top.push(i->second);
+	}
+
+	int size = 0;
+	for (int i = 0; i < 5; i++)
+	{
+		if (top.empty())
 		{
-			cout << i->second[j] << " ";
+			size = 0;
 		}
-		cout << endl;
-	}
-
-	forwardEdges = renameNodes();
-	unvisitNodes();
-
-	cout << "Printing relabeled forward edges\n";
-	for (auto i = forwardEdges.begin(); i != forwardEdges.end(); i++)
-	{
-		cout << "Node " << i->first << ": ";
-		for (unsigned int j = 0; j < i->second.size(); j++)
+		else
 		{
-			cout << i->second[j] << " ";
+			size = top.top();
+			top.pop();
 		}
-		cout << endl;
+
+		cout << size << " ";
 	}
-
-	for (map<int, vector<int> >::reverse_iterator i = forwardEdges.rbegin(); i != forwardEdges.rend(); i++)
-	{
-		cout << "node is " << i->first << endl;
-	}
-
-	cout << "Calling second dfs\n";
-	dfsLoop(vertices, forwardEdges);
-
-	for (auto i = vertices.begin(); i != vertices.end(); i++)
-	{
-		cout << i->first << ": " << vertices[i->first].s << endl;
-		sizes[i->second.s]++;
-	}
-
-	for (auto i = sizes.begin(); i != sizes.end(); i++)
-	{
-		cout << i->second << endl;
-	}
-}
-
-void Graph::addEdge(pair<int, int> edge)
-{
-	forwardEdges[edge.first].push_back(edge.second);
-	backwardEdges[edge.second].push_back(edge.first);
-	vertices[edge.first] = Vertex();
-	vertices[edge.second] = Vertex();
-}
-
-void Graph::dfsLoop(map<int, Vertex> vertexMap, map<int, vector<int> > edges)
-{
-	for (map<int, vector<int> >::reverse_iterator i = edges.rbegin(); i != edges.rend(); i++);
-	for (map<int, Vertex>::reverse_iterator i = vertexMap.rbegin(); i != vertexMap.rend(); i++)
-	{
-		cout << "source is " << i->first << endl;
-		if (!vertices[i->first].explored)
-		{
-			source = i->first;
-			dfs(vertices, edges, i->first);
-		}
-	}
-}
-
-void Graph::dfs(map<int, Vertex> vertexMap, map<int, vector<int> > edges, int vertex)
-{
-	vertices[vertex].explored = true;
-	vertices[vertex].s = source;
-
-	for (unsigned int i = 0; i < edges[vertex].size(); i++)
-	{
-		if (!vertices[edges[vertex][i]].explored)
-		{
-			dfs(vertices, edges, edges[vertex][i]);
-		}
-	}
-
-	finishingTime++;
-	vertices[vertex].t = finishingTime;
-}
-
-map<int, vector<int> > Graph::renameNodes()
-{
-	map<int, vector<int> > newNodes;
-	for (auto i = forwardEdges.begin(); i != forwardEdges.end(); i++)
-	{
-		for (unsigned int j = 0; j < i->second.size(); j++)
-		{
-			newNodes[vertices[i->first].t].push_back(vertices[i->second[j]].t);
-		}
-	}
-
-	return newNodes;
-}
-
-void Graph::unvisitNodes()
-{
-	for (auto i = vertices.begin(); i != vertices.end(); i++)
-	{
-		i->second.explored = false;
-	}
-}
-
-Vertex::Vertex():t(0), s(0), explored(false)
-{
-
+	cout << endl;
 }
 
 #endif /* __KOSARAJU_H__ */
