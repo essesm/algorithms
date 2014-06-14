@@ -1,0 +1,4 @@
+bin/
+findbugs-2.0.1/
+*.class
+*.jar
