@@ -12,7 +12,7 @@ class KargerGraph
 {
 public:
 	int minCut();
-	void addEdge(pair<int, int> edge);
+	void addEdge(int e1, int e2);
 
 private:
 	int minCutTrial();
@@ -52,11 +52,14 @@ int KargerGraph::minCutTrial()
 	return e.size();
 }
 
-void KargerGraph::addEdge(pair<int, int> edge)
+void KargerGraph::addEdge(int e1, int e2)
 {
-	vertices.insert(edge.first);
-	vertices.insert(edge.second);
-	edges.push_back(edge);
+    if (e1 < e2)
+    {
+    	vertices.insert(e1);
+    	vertices.insert(e2);
+    	edges.push_back(make_pair(e1, e2));
+    }
 }
 
 void KargerGraph::collapseEdge(pair<int, int> edge, vector<pair<int, int> > &e, set<int> &v)

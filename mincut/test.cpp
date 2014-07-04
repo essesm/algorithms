@@ -5,18 +5,6 @@
 
 int main()
 {
-	KargerGraph g1;
-	g1.addEdge(make_pair(1, 2));
-	g1.addEdge(make_pair(1, 3));
-	g1.addEdge(make_pair(1, 4));
-	g1.addEdge(make_pair(1, 5));
-	g1.addEdge(make_pair(2, 3));
-	g1.addEdge(make_pair(2, 4));
-	g1.addEdge(make_pair(2, 5));
-	g1.addEdge(make_pair(3, 4));
-
-	assert(g1.minCut() == 2);
-
 	KargerGraph g;
 	ifstream infile("kargerMinCut.txt");
 	string line;
@@ -31,10 +19,7 @@ int main()
 
 		while (ss >> v2)
 		{
-			if (v1 < v2)
-			{
-				g.addEdge(make_pair(v1, v2));
-			}
+			g.addEdge(v1, v2);
 		}
 	}
 
