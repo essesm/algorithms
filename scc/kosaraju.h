@@ -24,12 +24,13 @@ public:
 	Graph(int N);
 	~Graph();
 	void addEdge(int v1, int v2);
-	void scc();
+	int* scc();
 
 private:
 	int t;
 	int s;
 	int N;
+    int topFive[5];
 	Vertex *G;
 	Vertex *newG;
 
@@ -117,7 +118,7 @@ void Graph::prepareSecondPass()
 	}
 }
 
-void Graph::scc()
+int* Graph::scc()
 {
 	dfsLoop(G, true);
 	prepareSecondPass();
@@ -149,9 +150,10 @@ void Graph::scc()
 			top.pop();
 		}
 
-		cout << size << " ";
+        topFive[i] = size;
 	}
-	cout << endl;
+
+    return topFive;
 }
 
 #endif /* __KOSARAJU_H__ */
