@@ -6,8 +6,6 @@
 #include <utility>
 #include <random>
 
-using namespace std;
-
 class KargerGraph
 {
 public:
@@ -16,9 +14,9 @@ public:
 
 private:
 	int minCutTrial();
-	set<int> vertices;
-	vector<pair<int, int> > edges;
-	void collapseEdge(pair<int, int> edge, vector<pair<int, int> > &e, set<int> &v);
+	std::set<int> vertices;
+	std::vector<std::pair<int, int> > edges;
+	void collapseEdge(std::pair<int, int> edge, std::vector<std::pair<int, int> > &e, std::set<int> &v);
 };
 
 int KargerGraph::minCut()
@@ -41,8 +39,8 @@ int KargerGraph::minCut()
 
 int KargerGraph::minCutTrial()
 {
-	set<int> v = vertices;
-	vector<pair<int, int> > e = edges;
+	std::set<int> v = vertices;
+	std::vector<std::pair<int, int> > e = edges;
 
 	while (v.size() > 2)
 	{
@@ -58,14 +56,14 @@ void KargerGraph::addEdge(int e1, int e2)
     {
     	vertices.insert(e1);
     	vertices.insert(e2);
-    	edges.push_back(make_pair(e1, e2));
+    	edges.push_back(std::make_pair(e1, e2));
     }
 }
 
-void KargerGraph::collapseEdge(pair<int, int> edge, vector<pair<int, int> > &e, set<int> &v)
+void KargerGraph::collapseEdge(std::pair<int, int> edge, std::vector<std::pair<int, int> > &e, std::set<int> &v)
 {
-	int highNode = max(edge.first, edge.second);
-	int lowNode = min(edge.first, edge.second);
+	int highNode = std::max(edge.first, edge.second);
+	int lowNode = std::min(edge.first, edge.second);
 
 	v.erase(highNode);
 	

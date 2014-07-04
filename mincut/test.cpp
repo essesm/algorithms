@@ -3,6 +3,8 @@
 #include <sstream>
 #include <cassert>
 
+using namespace std;
+
 int main()
 {
 	KargerGraph g;
