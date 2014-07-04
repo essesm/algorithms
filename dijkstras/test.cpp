@@ -1,8 +1,9 @@
 #include "dijkstra.h"
-#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <cassert>
+
+using namespace std;
 
 int main()
 {
@@ -12,7 +13,6 @@ int main()
 	int weight;
 	char c;
 
-	/* REAL TEST */
 	Graph g(200);
 	ifstream infile("dijkstraData.txt");
 

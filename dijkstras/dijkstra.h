@@ -2,9 +2,6 @@
 #define __DIJKSTRA_H__
 
 #include <vector>
-#include <iostream>
-
-using namespace std;
 
 class Edge
 {
@@ -20,7 +17,7 @@ class Vertex
 public:
 	int n;
 	bool visited;
-	vector<Edge> linkedVertices;
+	std::vector<Edge> linkedVertices;
 };
 
 class Graph
@@ -33,7 +30,7 @@ public:
 
 private:
 	unsigned int N;
-	vector<int> visited;
+	std::vector<int> visited;
 	unsigned int *costs;
 	Vertex *vertices;
 };
