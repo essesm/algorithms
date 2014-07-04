@@ -6,16 +6,14 @@
 #include <iostream>
 #include <queue>
 
-using namespace std;
-
 class Vertex
 {
 public:
 	bool visited;
 	int leader;
 	int finish;
-	vector<int> linkedVertices;
-	vector<int> rLinkedVertices;
+	std::vector<int> linkedVertices;
+	std::vector<int> rLinkedVertices;
 };
 
 class Graph
@@ -56,7 +54,7 @@ void Graph::dfs(Vertex G[], int i, bool reverse)
 	G[i].visited = true;
 	G[i].leader = s;
 
-	vector<int> next;
+	std::vector<int> next;
 
 	if (reverse)
 	{
@@ -107,7 +105,7 @@ void Graph::prepareSecondPass()
 		newG[i].visited = false;
 		newG[i].finish = 0;
 		newG[i].leader = 0;
-		vector<int> temp;
+		std::vector<int> temp;
 
 		for (unsigned int j = 0; j < G[i].linkedVertices.size(); j++)
 		{
@@ -124,8 +122,8 @@ int* Graph::scc()
 	prepareSecondPass();
 	dfsLoop(newG, false);
 
-	map<int, int> sccSizes;
-	priority_queue<int> top;
+	std::map<int, int> sccSizes;
+	std::priority_queue<int> top;
 
 	for (int i =  1; i <= N; i++)
 	{

@@ -2,6 +2,8 @@
 #include <fstream>
 #include <cassert>
 
+using namespace std;
+
 int main()
 {
 	ifstream infile("SCC.txt");
