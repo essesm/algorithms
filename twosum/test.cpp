@@ -27,7 +27,6 @@ int main()
 
 	for (int i = -10000; i <= 10000; i++)
 	{
-		cout << i << "\n";
 		for (unsigned int j = 0; j < vals.size(); j++)
 		{
 			if (table.count(i - vals[j]) > 0)
