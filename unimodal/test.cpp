@@ -1,6 +1,6 @@
 #include "max.h"
 #include <cassert>
-#include <iostream>
+
 using namespace std;
 
 int main()
