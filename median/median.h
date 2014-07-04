@@ -3,9 +3,6 @@
 
 #include <queue>
 #include <vector>
-#include <iostream>
-
-using namespace std;
 
 class Median
 {
@@ -14,8 +11,8 @@ public:
 	int get();
 
 private:
-	priority_queue<int, vector<int>, less<int> > maxes;
-	priority_queue<int, vector<int>, greater<int> > mins;
+	std::priority_queue<int, std::vector<int>, std::less<int> > maxes;
+	std::priority_queue<int, std::vector<int>, std::greater<int> > mins;
 };
 
 void Median::insert(int val)
