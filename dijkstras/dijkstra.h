@@ -12,7 +12,7 @@ public:
 	Edge(int v1, int v2, int weight);
 	int v1;
 	int v2;
-	int weight;
+	unsigned int weight;
 };
 
 class Vertex
@@ -29,18 +29,18 @@ public:
 	Graph(unsigned int N);
 	~Graph();
 	void addEdge(int v1, int v2, int weight);
-	int *dijkstra();
+	unsigned int *dijkstra();
 
 private:
 	unsigned int N;
 	vector<int> visited;
-	int *costs;
+	unsigned int *costs;
 	Vertex *vertices;
 };
 
 Graph::Graph(unsigned int N):N(N)
 {
-	costs = new int[N + 1];
+	costs = new unsigned int[N + 1];
 	vertices = new Vertex[N + 1];
 
 	for (unsigned int i = 1; i <= N; i++)
@@ -62,7 +62,7 @@ void Graph::addEdge(int v1, int v2, int weight)
 	vertices[v1].linkedVertices.push_back(Edge(v1, v2, weight));
 }
 
-int* Graph::dijkstra()
+unsigned int* Graph::dijkstra()
 {
 	vertices[1].visited = true;
 	costs[1] = 0;
