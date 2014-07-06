@@ -1,5 +1,5 @@
 DIRS = mergesort inversions comparisons dijkstras mincut quicksort scc \
-	   selection unimodal median twosum
+	   selection unimodal median twosum completiontimes
 
 all: $(DIRS)
 	for dir in $(DIRS); do make -C $$dir; done;

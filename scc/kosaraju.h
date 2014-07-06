@@ -41,6 +41,12 @@ Graph::Graph(int N):N(N)
 {
 	G = new Vertex[N + 1];
 	newG = new Vertex[N + 1];
+
+	for (int i = 0; i <= N; i++)
+	{
+		G[i].visited = false;
+		newG[i].visited = false;
+	}
 }
 
 Graph::~Graph()
